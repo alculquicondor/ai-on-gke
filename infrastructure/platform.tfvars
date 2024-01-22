@@ -19,13 +19,13 @@ project_id = "ai-on-gke-jss-sandbox"
 ####    PLATFORM
 #######################################################
 ## network values
-create_network  = true
+create_network  = false
 network_name    = "ml-network"
 subnetwork_name = "ml-subnet"
 
 ## required only in case new network provisioning
 subnetwork_cidr           = "10.100.0.0/16"
-subnetwork_region         = "us-central1"
+subnetwork_region         = "us-central"
 subnetwork_private_access = "true"
 subnetwork_description    = "GKE subnet"
 network_secondary_ranges = {
@@ -43,9 +43,9 @@ network_secondary_ranges = {
 
 ## gke variables
 create_cluster                       = true
-private_cluster                      = true ## Default true. Use false for a public cluster
+private_cluster                      = true  ## Default true. Use false for a public cluster
 autopilot_cluster                    = false # false = standard cluster, true = autopilot cluster
-cluster_name                         = "ml-cluster"
+cluster_name                         = "ml-cluster2"
 kubernetes_version                   = "1.27"
 cluster_regional                     = true
 cluster_region                       = "us-central1"
@@ -53,6 +53,8 @@ cluster_zones                        = ["us-central1-a", "us-central1-b", "us-ce
 ip_range_pods                        = "us-central1-01-gke-01-pods-1"
 ip_range_services                    = "us-central1-01-gke-01-services-1"
 monitoring_enable_managed_prometheus = true
+gcs_fuse_csi_driver                  = true ## enabled default for autopilot
+deletion_protection                  = false 
 master_authorized_networks = [{
   cidr_block   = "10.100.0.0/16"
   display_name = "VPC"
@@ -145,12 +147,12 @@ all_node_pools_oauth_scopes = [
 ]
 
 
-cluster_labels= {
-  "cloud.google.com/gke-profile" = "ai-on-gke"
+cluster_labels = {
+  "gke-profile" = "ai-on-gke"
 }
 
 all_node_pools_labels = {
-  "cloud.google.com/gke-profile" = "ray"
+  "gke-profile" = "ray"
 }
 
 all_node_pools_metadata = {
